@@ -64,7 +64,7 @@ data:
           - dev: n2
         client:
           upf:
-            {{- .configuration.upf | nindent 8 }}
+            {{- .configuration.upf | nindent 12 }}
 
       gtpc:
         server:
