@@ -18,33 +18,36 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   nrf.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
-    sbi:
-      server:
-        no_tls: {{ .configuration.tls.server.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/nrf.key
-        cert: {{ .volume.mount }}/tls/nrf.crt
-      client:
-        no_tls: {{ .configuration.tls.client.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/nrf.key
-        cert: {{ .volume.mount }}/tls/nrf.crt
-
     nrf:
-          {{- .configuration.nrf | nindent 10 }}
 
-          sbi:
-            - dev: eth0
-              advertise: {{ $.Values.global.nrf.service.name }}
-              port: {{ $.Values.global.nrf.service.port }}
+      {{- .configuration.nrf | nindent 6 }}
 
-    scp:
-          sbi:
-            - addr: {{ $.Values.global.scp.service.name }}
-              port: {{ $.Values.global.scp.service.port }}
+      {{- if eq $.Values.global.sbi.scheme "https" }}
+      default:
+        tls:
+          server:
+            scheme: https
+            private_key: {{ .volume.mount }}/tls/nrf.key
+            cert: {{ .volume.mount }}/tls/nrf.crt
+            verify_client: true
+            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+          client:
+            scheme: https
+            cacert: {{ .volume.mount }}/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/tls/nrf.key
+            client_cert: {{ .volume.mount }}/tls/nrf.crt
+      {{- end }}
+
+      sbi:
+        server:
+          - dev: eth0
+            advertise: {{ $.Values.global.nrf.service.name }}
+            port: {{ $.Values.global.nrf.service.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}

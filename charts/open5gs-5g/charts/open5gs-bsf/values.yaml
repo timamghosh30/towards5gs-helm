@@ -96,17 +96,18 @@ bsf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
 
     global: |-
-      parameter:
-      max:
-      time:
+      global:
+        max:
+          ue: 1024
 
     bsf: |-
       discovery:

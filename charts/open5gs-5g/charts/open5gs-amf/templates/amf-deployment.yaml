@@ -97,4 +97,15 @@ spec:
           sources:
           - configMap:
               name: {{ include "open5gs-amf.fullname" $ }}-configmap
+          {{- if eq $.Values.global.sbi.scheme "https" }}
+          - secret:
+              name: {{ include "open5gs-amf.fullname" $ }}-secret
+              items:
+              - key: ca.crt
+                path: tls/ca.crt
+              - key: tls.crt
+                path: tls/amf.crt
+              - key: tls.key
+                path: tls/amf.key
+          {{- end }}
 {{- end }}

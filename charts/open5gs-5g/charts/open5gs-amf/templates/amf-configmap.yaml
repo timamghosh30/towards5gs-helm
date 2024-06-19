@@ -18,50 +18,55 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   amf.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
-    sbi:
-      server:
-        no_tls: {{ .configuration.tls.server.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/amf.key
-        cert: {{ .volume.mount }}/tls/amf.crt
-      client:
-        no_tls: {{ .configuration.tls.client.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/amf.key
-        cert: {{ .volume.mount }}/tls/amf.crt
-
     amf:
-          {{- .configuration.amf | nindent 10 }}
+      {{- .configuration.amf | nindent 6 }}
 
-          sbi:
-            - dev: eth0
-              advertise: {{ include "open5gs-amf.fullname" $ }}-service
-              port: {{ .service.port }}
-
-          ngap:
-{{- if $.Values.global.amf.service.ngap.enabled }}
-            dev: eth0
-{{- else }}
-            dev: n2
+{{- if eq $.Values.global.sbi.scheme "https" }}
+      default:
+        tls:
+          server:
+            scheme: https
+            private_key: {{ .volume.mount }}/tls/amf.key
+            cert: {{ .volume.mount }}/tls/amf.crt
+            verify_client: true
+            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+          client:
+            scheme: https
+            cacert: {{ .volume.mount }}/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/tls/amf.key
+            client_cert: {{ .volume.mount }}/tls/amf.crt
 {{- end }}
-            {{- .configuration.ngap | nindent 12 }}
 
-          metrics:
-            - addr: 0.0.0.0
-              port: {{ .metricService.port }}
+      sbi:
+        server:
+          - dev: eth0
+            advertise: {{ include "open5gs-amf.fullname" $ }}-service
+            port: {{ .service.port }}
 
-    nrf:
-          sbi:
-            - addr: {{ $.Values.global.nrf.service.name }}
-              port: {{ $.Values.global.nrf.service.port }}
+        client:
+          nrf:
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
+          scp:
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
-    scp:
-          sbi:
-            - addr: {{ $.Values.global.scp.service.name }}
-              port: {{ $.Values.global.scp.service.port }}
+      ngap:
+        server:
+  {{- if $.Values.global.amf.service.ngap.enabled }}
+          - dev: eth0
+  {{- else }}
+          - dev: n2
+  {{- end }}
+          {{- .configuration.ngap | nindent 10 }}
+
+      metrics:
+        server:
+          - addr: 0.0.0.0
+            port: {{ .metricService.port }}
 
     logger:
       {{- .configuration.logger | nindent 4 }}

@@ -31,6 +31,8 @@ global:
       type: ClusterIP
       port: "8000"
       nodePort: "30801"
+  sbi:
+    scheme: http  # http or https
 
 initcontainers:
   curl:
@@ -102,18 +104,18 @@ ausf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    delegated_discovery: no
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
 
     global: |-
-      parameter:
-      max:
-      time:
+      global:
+        max:
+          ue: 1024
 
     ausf: |-
       discovery:

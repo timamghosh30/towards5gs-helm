@@ -103,4 +103,15 @@ spec:
               items:
               - key: smf.yaml
                 path: smf.yaml
+          {{- if eq $.Values.global.sbi.scheme "https" }}
+          - secret:
+              name: {{ include "open5gs-smf.fullname" $ }}-secret
+              items:
+              - key: ca.crt
+                path: tls/ca.crt
+              - key: tls.crt
+                path: tls/smf.crt
+              - key: tls.key
+                path: tls/smf.key
+          {{- end }}
 {{- end }}

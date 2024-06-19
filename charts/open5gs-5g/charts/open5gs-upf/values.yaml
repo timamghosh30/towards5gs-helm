@@ -109,17 +109,20 @@ upf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
   configuration:
+
     global: |-
-      parameter:
-      max:
-      time:
+      global:
+        max:
+          ue: 1024
 
     upf: |-
-      subnet:
-        - addr: 10.45.0.1/16
-          dnn: internet
-        - addr: 2001:db8:cafe::1/48
+      session:
+        - gateway: 10.45.0.1
+          subnet: 10.45.0.0/16
+        - gateway: '2001:db8:cafe::1'
+          subnet: '2001:db8:cafe::/48'
 
     logger: |-
       level: info

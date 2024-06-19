@@ -104,20 +104,21 @@ nssf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
+
+    global: |-
+      global:
+        max:
+          ue: 1024
 
     s_nssai:
       sst: 1
-
-    global: |-
-      parameter:
-      max:
-      time:
 
     nssf: |-
       discovery:

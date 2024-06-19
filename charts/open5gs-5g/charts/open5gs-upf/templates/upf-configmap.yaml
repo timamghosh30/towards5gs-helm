@@ -18,17 +18,24 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   upf.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
     upf:
-        {{- .configuration.upf | nindent 8 }}
-        pfcp:
-          - dev: n4
-        gtpu:
+      {{- .configuration.upf | nindent 6 }}
+
+      pfcp:
+        server:
+        - dev: n4
+
+      gtpu:
+        server:
           - dev: n3
 
-        metrics:
+      metrics:
+        server:
           - addr: 0.0.0.0
             port: {{ .metricService.port }}
 

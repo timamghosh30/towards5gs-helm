@@ -84,4 +84,15 @@ spec:
           sources:
           - configMap:
               name: {{ include "open5gs-scp.fullname" $ }}-configmap
+          {{- if eq $.Values.global.sbi.scheme "https" }}
+          - secret:
+              name: {{ include "open5gs-scp.fullname" $ }}-secret
+              items:
+              - key: ca.crt
+                path: tls/ca.crt
+              - key: tls.crt
+                path: tls/scp.crt
+              - key: tls.key
+                path: tls/scp.key
+          {{- end }}
 {{- end }}

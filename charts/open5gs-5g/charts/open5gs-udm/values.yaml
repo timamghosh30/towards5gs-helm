@@ -104,12 +104,19 @@ udm:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
+
+    global: |-
+      global:
+        max:
+          ue: 1024
 
     hnet:
       - id: 1
@@ -131,14 +138,28 @@ udm:
         scheme: 2
         key: /open5gs/install/hnet/secp256r1-6.key
 
-    global: |-
-      parameter:
-      max:
-      time:
-
     udm: |-
       discovery:
         delegated: no
+      hnet:
+      - id: 1
+        scheme: 1
+        key: /open5gs/install/hnet/curve25519-1.key
+      - id: 2
+        scheme: 2
+        key: /open5gs/install/hnet/secp256r1-2.key
+      - id: 3
+        scheme: 1
+        key: /open5gs/install/hnet/curve25519-3.key
+      - id: 4
+        scheme: 2
+        key: /open5gs/install/hnet/secp256r1-4.key
+      - id: 5
+        scheme: 1
+        key: /open5gs/install/hnet/curve25519-5.key
+      - id: 6
+        scheme: 2
+        key: /open5gs/install/hnet/secp256r1-6.key
 
     logger: |-
       level: info

@@ -32,7 +32,7 @@ global:
       port: "8000"
       nodePort: "30801"
   sbi:
-    scheme: http
+    scheme: http  # http or https
   amf:
     n2if:  # NGAP
       ipAddress: 10.100.50.249
@@ -126,21 +126,19 @@ amf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    delegated_discovery: no
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
 
     global: |-
-      parameter:
-      max:
-      usrsctp:
-      time:
-        t3512:
-          value: 540
+      global:
+        max:
+          ue: 1024
+
     amf: |-
       discovery:
         delegated: no
@@ -167,19 +165,23 @@ amf:
           ciphering_order : [ NEA0, NEA1, NEA2 ]
       network_name:
           full: Open5GS
+          short: Next
       amf_name: open5gs-amf0
+      time:
+        t3512:
+          value: 540
     ngap: |-
-      option:
-        sctp:
-          spp_hbinterval : 5000
-          spp_sackdelay : 200
-          srto_initial : 3000
-          srto_min : 1000
-          srto_max : 7000
-          sinit_num_ostreams : 50
-          sinit_max_instreams : 65535
-          sinit_max_attempts : 4
-          sinit_max_init_timeo : 8000
+      # option:
+      #   sctp:
+      #     spp_hbinterval : 5000
+      #     spp_sackdelay : 200
+      #     srto_initial : 3000
+      #     srto_min : 1000
+      #     srto_max : 7000
+      #     sinit_num_ostreams : 50
+      #     sinit_max_instreams : 65535
+      #     sinit_max_attempts : 4
+      #     sinit_max_init_timeo : 8000
 
     logger: |-
       level: info

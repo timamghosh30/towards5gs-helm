@@ -18,49 +18,61 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   smf.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
-    sbi:
-      server:
-        no_tls: {{ .configuration.tls.server.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/smf.key
-        cert: {{ .volume.mount }}/tls/smf.crt
-      client:
-        no_tls: {{ .configuration.tls.client.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/smf.key
-        cert: {{ .volume.mount }}/tls/smf.crt
-
     smf:
-          {{- .configuration.smf | nindent 10 }}
+      {{- .configuration.smf | nindent 6 }}
 
-          sbi:
-            - dev: eth0
-              advertise: {{ include "open5gs-smf.fullname" $ }}-service
-              port: {{ .service.port }}
+{{- if eq $.Values.global.sbi.scheme "https" }}
+      default:
+        tls:
+          server:
+            scheme: https
+            private_key: {{ .volume.mount }}/tls/smf.key
+            cert: {{ .volume.mount }}/tls/smf.crt
+            verify_client: true
+            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+          client:
+            scheme: https
+            cacert: {{ .volume.mount }}/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/tls/smf.key
+            client_cert: {{ .volume.mount }}/tls/smf.crt
+{{- end }}
 
-          pfcp:
-            - dev: n4
-          gtpc:
-            - dev: eth0
-          gtpu:
-            - dev: n3
+      sbi:
+        server:
+          - dev: eth0
+            advertise: {{ include "open5gs-smf.fullname" $ }}-service
+            port: {{ .service.port }}
 
-          metrics:
-            - addr: 0.0.0.0
-              port: {{ .metricService.port }}
+        client:
+          nrf:
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
+          scp:
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
-    nrf:
-          sbi:
-            - addr: {{ $.Values.global.nrf.service.name }}
-              port: {{ $.Values.global.nrf.service.port }}
+      metrics:
+        server:
+        - addr: 0.0.0.0
+          port: {{ .metricService.port }}
 
-    scp:
-          sbi:
-            - addr: {{ $.Values.global.scp.service.name }}
-              port: {{ $.Values.global.scp.service.port }}
+      pfcp:
+        server:
+          - dev: n2
+        client:
+          upf:
+            {{- .configuration.upf | nindent 8 }}
+
+      gtpc:
+        server:
+          - dev: eth0
+
+      gtpu:
+        server:
+          - dev: n3
 
     logger:
       {{- .configuration.logger | nindent 6 }}

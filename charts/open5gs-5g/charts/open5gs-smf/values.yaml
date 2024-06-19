@@ -129,36 +129,39 @@ smf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
 
     global: |-
-      parameter:
-      max:
-      time:
-      upf:
-          pfcp:
-            - addr: 10.100.50.241
+      global:
+        max:
+          ue: 1024
+
     smf: |-
       discovery:
         delegated: no
-      subnet:
-        - addr: 10.45.0.1/16
-          dnn: internet
-        - addr: 2001:db8:cafe::1/48
+      session:
+        - gateway: 10.45.0.1
+          subnet: 10.45.0.0/16
+        - gateway: '2001:db8:cafe::1'
+          subnet: '2001:db8:cafe::/48'
       dns:
         - 8.8.8.8
         - 8.8.4.4
         - 2001:4860:4860::8888
         - 2001:4860:4860::8844
       mtu: 1400
-      ctf:
-        enabled: auto
-      #freeDiameter: @sysconfdir@/freeDiameter/smf.conf
+      # ctf:
+      #   enabled: auto
+      # freeDiameter: @sysconfdir@/freeDiameter/smf.conf
+
+    upf: |-
+      - address: 10.100.50.241
 
     logger: |-
       level: info

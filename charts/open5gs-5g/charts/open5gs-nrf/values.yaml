@@ -110,21 +110,24 @@ nrf:
     #  - secretName: chart-example-tls
     #    hosts:
     #      - chart-example.local
+
+  tls:
+    certificate:
+      spec:
+        duration: 2160h # 90 days
+
   configuration:
-    tls:
-      server:
-        no_tls: "true"
-      client:
-        no_tls: "true"
 
     global: |-
-      parameter:
-      max:
-      time:
-        #nf_instance:
-          #heartbeat: 0
+      global:
+        max:
+          ue: 1024
 
     nrf: |-
+      serving:
+        - plmn_id:
+            mcc: 999
+            mnc: 70
 
     logger: |-
       level: info

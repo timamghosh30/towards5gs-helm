@@ -18,41 +18,42 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   udm.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
-    sbi:
-      server:
-        no_tls: {{ .configuration.tls.server.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/udm.key
-        cert: {{ .volume.mount }}/tls/udm.crt
-      client:
-        no_tls: {{ .configuration.tls.client.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/udm.key
-        cert: {{ .volume.mount }}/tls/udm.crt
-
     udm:
-          {{- .configuration.udm | nindent 10 }}
 
-          hnet:
-            {{- toYaml .configuration.hnet | nindent 12 }}
+      {{- .configuration.udm | nindent 6 }}
 
-          sbi:
-            - dev: eth0
-              advertise: {{ include "open5gs-udm.fullname" $ }}-service
-              port: {{ .service.port }}
+{{- if eq $.Values.global.sbi.scheme "https" }}
+      default:
+        tls:
+          server:
+            scheme: https
+            private_key: {{ .volume.mount }}/tls/udm.key
+            cert: {{ .volume.mount }}/tls/udm.crt
+            verify_client: true
+            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+          client:
+            scheme: https
+            cacert: {{ .volume.mount }}/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/tls/udm.key
+            client_cert: {{ .volume.mount }}/tls/udm.crt
+{{- end }}
 
-    nrf:
-          sbi:
-            - addr: {{ $.Values.global.nrf.service.name }}
-              port: {{ $.Values.global.nrf.service.port }}
+      sbi:
+        server:
+        - dev: eth0
+          advertise: {{ include "open5gs-udm.fullname" $ }}-service
+          port: {{ .service.port }}
 
-    scp:
-          sbi:
-            - addr: {{ $.Values.global.scp.service.name }}
-              port: {{ $.Values.global.scp.service.port }}
+        client:
+          nrf:
+          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
+          scp:
+          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}

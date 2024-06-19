@@ -86,4 +86,15 @@ spec:
           sources:
           - configMap:
               name: {{ include "open5gs-nrf.fullname" $ }}-configmap
+          {{- if eq $.Values.global.sbi.scheme "https" }}
+          - secret:
+              name: {{ include "open5gs-nrf.fullname" $ }}-secret
+              items:
+              - key: ca.crt
+                path: tls/ca.crt
+              - key: tls.crt
+                path: tls/nrf.crt
+              - key: tls.key
+                path: tls/nrf.key
+          {{- end }}
 {{- end }}

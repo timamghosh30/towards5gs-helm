@@ -28,6 +28,8 @@ global:
       type: ClusterIP
       port: "8000"
       nodePort: "30801"
+  sbi:
+    scheme: http  # http or https
   amf:
     n2if:  # NGAP
       ipAddress: 10.100.50.249

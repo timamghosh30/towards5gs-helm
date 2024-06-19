@@ -18,39 +18,42 @@ metadata:
   labels:
     app: {{ $.Values.global.projectName }}
 data:
+
   bsf.yaml: |
+
     {{- .configuration.global | nindent 4 }}
 
-    sbi:
-      server:
-        no_tls: {{ .configuration.tls.server.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/bsf.key
-        cert: {{ .volume.mount }}/tls/bsf.crt
-      client:
-        no_tls: {{ .configuration.tls.client.no_tls }}
-        cacert: {{ .volume.mount }}/tls/ca.crt
-        key: {{ .volume.mount }}/tls/bsf.key
-        cert: {{ .volume.mount }}/tls/bsf.crt
-
     bsf:
-          {{- .configuration.bsf | nindent 10 }}
 
-          sbi:
-            - dev: eth0
-              advertise: {{ include "open5gs-bsf.fullname" $ }}-service
-              port: {{ .service.port }}
+      {{- .configuration.bsf | nindent 6 }}
 
-    nrf:
-          sbi:
-            - addr: {{ $.Values.global.nrf.service.name }}
-              port: {{ $.Values.global.nrf.service.port }}
+{{- if eq $.Values.global.sbi.scheme "https" }}
+      default:
+        tls:
+          server:
+            scheme: https
+            private_key: {{ .volume.mount }}/tls/bsf.key
+            cert: {{ .volume.mount }}/tls/bsf.crt
+            verify_client: true
+            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+          client:
+            scheme: https
+            cacert: {{ .volume.mount }}/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/tls/bsf.key
+            client_cert: {{ .volume.mount }}/tls/bsf.crt
+{{- end }}
 
-    scp:
-          sbi:
-            - addr: {{ $.Values.global.scp.service.name }}
-              port: {{ $.Values.global.scp.service.port }}
+      sbi:
+        server:
+        - dev: eth0
+          advertise: {{ include "open5gs-bsf.fullname" $ }}-service
+          port: {{ .service.port }}
 
+        client:
+          nrf:
+          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
+          scp:
+          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}
