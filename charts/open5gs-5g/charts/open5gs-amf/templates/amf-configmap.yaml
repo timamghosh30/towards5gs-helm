@@ -31,15 +31,15 @@ data:
         tls:
           server:
             scheme: https
-            private_key: {{ .volume.mount }}/tls/amf.key
-            cert: {{ .volume.mount }}/tls/amf.crt
+            private_key: {{ .volume.mount }}/etc/tls/amf.key
+            cert: {{ .volume.mount }}/etc/tls/amf.crt
             verify_client: true
-            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+            verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https
-            cacert: {{ .volume.mount }}/tls/ca.crt
-            client_private_key: {{ .volume.mount }}/tls/amf.key
-            client_cert: {{ .volume.mount }}/tls/amf.crt
+            cacert: {{ .volume.mount }}/etc/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/etc/tls/amf.key
+            client_cert: {{ .volume.mount }}/etc/tls/amf.crt
 {{- end }}
 
       sbi:

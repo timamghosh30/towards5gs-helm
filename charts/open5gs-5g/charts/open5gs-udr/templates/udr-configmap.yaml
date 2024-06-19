@@ -34,15 +34,15 @@ data:
         tls:
           server:
             scheme: https
-            private_key: {{ .volume.mount }}/tls/udr.key
-            cert: {{ .volume.mount }}/tls/udr.crt
+            private_key: {{ .volume.mount }}/etc/tls/udr.key
+            cert: {{ .volume.mount }}/etc/tls/udr.crt
             verify_client: true
-            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+            verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https
-            cacert: {{ .volume.mount }}/tls/ca.crt
-            client_private_key: {{ .volume.mount }}/tls/udr.key
-            client_cert: {{ .volume.mount }}/tls/udr.crt
+            cacert: {{ .volume.mount }}/etc/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/etc/tls/udr.key
+            client_cert: {{ .volume.mount }}/etc/tls/udr.crt
 {{- end }}
 
       sbi:

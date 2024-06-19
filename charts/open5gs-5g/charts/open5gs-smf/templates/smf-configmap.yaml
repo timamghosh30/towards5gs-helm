@@ -31,15 +31,15 @@ data:
         tls:
           server:
             scheme: https
-            private_key: {{ .volume.mount }}/tls/smf.key
-            cert: {{ .volume.mount }}/tls/smf.crt
+            private_key: {{ .volume.mount }}/etc/tls/smf.key
+            cert: {{ .volume.mount }}/etc/tls/smf.crt
             verify_client: true
-            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+            verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https
-            cacert: {{ .volume.mount }}/tls/ca.crt
-            client_private_key: {{ .volume.mount }}/tls/smf.key
-            client_cert: {{ .volume.mount }}/tls/smf.crt
+            cacert: {{ .volume.mount }}/etc/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/etc/tls/smf.key
+            client_cert: {{ .volume.mount }}/etc/tls/smf.crt
 {{- end }}
 
       sbi:

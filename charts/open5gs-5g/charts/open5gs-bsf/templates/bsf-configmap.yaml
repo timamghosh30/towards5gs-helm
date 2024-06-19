@@ -32,15 +32,15 @@ data:
         tls:
           server:
             scheme: https
-            private_key: {{ .volume.mount }}/tls/bsf.key
-            cert: {{ .volume.mount }}/tls/bsf.crt
+            private_key: {{ .volume.mount }}/etc/tls/bsf.key
+            cert: {{ .volume.mount }}/etc/tls/bsf.crt
             verify_client: true
-            verify_client_cacert: {{ .volume.mount }}/tls/ca.crt
+            verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https
-            cacert: {{ .volume.mount }}/tls/ca.crt
-            client_private_key: {{ .volume.mount }}/tls/bsf.key
-            client_cert: {{ .volume.mount }}/tls/bsf.crt
+            cacert: {{ .volume.mount }}/etc/tls/ca.crt
+            client_private_key: {{ .volume.mount }}/etc/tls/bsf.key
+            client_cert: {{ .volume.mount }}/etc/tls/bsf.crt
 {{- end }}
 
       sbi:
