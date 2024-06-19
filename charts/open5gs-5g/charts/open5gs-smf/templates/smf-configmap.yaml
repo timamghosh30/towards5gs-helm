@@ -54,14 +54,9 @@ data:
           scp:
             - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
-      metrics:
-        server:
-        - addr: 0.0.0.0
-          port: {{ .metricService.port }}
-
       pfcp:
         server:
-          - dev: n2
+          - dev: n4
         client:
           upf:
             {{- .configuration.upf | nindent 12 }}
@@ -73,6 +68,11 @@ data:
       gtpu:
         server:
           - dev: n3
+
+      metrics:
+        server:
+        - addr: 0.0.0.0
+          port: {{ .metricService.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}
