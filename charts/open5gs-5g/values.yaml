@@ -15,7 +15,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  name: open5gs
+  projectName: open5gs
   nrf:
     service:
       name: nrf-nnrf
@@ -47,7 +47,7 @@ global:
   #Global network parametes
   n2network:
     name: n2network
-    type: macvlan
+    type: ipvlan
     masterIf: eth0
     subnetIP: 10.100.50.248
     cidr: 29
@@ -55,7 +55,7 @@ global:
     excludeIP: 10.100.50.254
   n3network:
     name: n3network
-    type: macvlan
+    type: ipvlan
     masterIf: eth0
     subnetIP: 10.100.50.232
     cidr: 29
@@ -63,7 +63,7 @@ global:
     excludeIP: 10.100.50.238
   n4network:
     name: n4network
-    type: macvlan
+    type: ipvlan
     masterIf: eth0
     subnetIP: 10.100.50.240
     cidr: 29
@@ -71,7 +71,7 @@ global:
     excludeIP: 10.100.50.246
   n6network:
     name: n6network
-    type: macvlan
+    type: ipvlan
     masterIf: eth1
     subnetIP: 10.100.100.0
     cidr: 24

@@ -15,7 +15,7 @@
 # Declare variables to be passed into your templates.
 
 global:
-  name: free5gc
+  projectName: free5gc
   userPlaneArchitecture: single  # possible values are "single" and "ulcl"
   nrf:
     service:
