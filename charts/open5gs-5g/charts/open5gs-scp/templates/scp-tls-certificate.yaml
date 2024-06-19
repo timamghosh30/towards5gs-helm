@@ -11,21 +11,21 @@
 # Software description: An open-source project providing Helm charts to deploy 5G components (Core + RAN) on top of Kubernetes
 #
 {{- if eq $.Values.global.sbi.scheme "https" }}
-{{- with .Values.pcf }}
+{{- with .Values.scp }}
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: {{ include "open5gs-pcf.fullname" $ }}-tls-certificate
+  name: {{ include "open5gs-scp.fullname" $ }}-tls-certificate
   labels:
     app: {{ $.Values.global.projectName }}
 spec:
   {{- toYaml .tls.certificate.spec | nindent 2 }}
-  secretName: {{ include "open5gs-pcf.fullname" $ }}-secret
-  commonName: {{ include "open5gs-pcf.fullname" $ }}-service
+  secretName: {{ include "open5gs-scp.fullname" $ }}-secret
+  commonName: {{ $.Values.global.scp.service.name }}
   dnsNames:
-    - {{ $.Values.global.nrf.service.name }}
+    - {{ $.Values.global.scp.service.name }}
   issuerRef:
-    name: {{ include "open5gs-pcf.fullname" $ }}-tls-issuer
+    name: {{ include "open5gs-scp.fullname" $ }}-tls-issuer
     kind: Issuer
 {{- end }}
 {{- end }}
