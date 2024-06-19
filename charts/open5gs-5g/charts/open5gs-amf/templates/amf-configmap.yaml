@@ -33,7 +33,7 @@ data:
             scheme: https
             private_key: {{ .volume.mount }}/etc/tls/amf.key
             cert: {{ .volume.mount }}/etc/tls/amf.crt
-            verify_client: true
+            verify_client: false
             verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https

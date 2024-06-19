@@ -34,7 +34,7 @@ data:
             scheme: https
             private_key: {{ .volume.mount }}/etc/tls/bsf.key
             cert: {{ .volume.mount }}/etc/tls/bsf.crt
-            verify_client: true
+            verify_client: false
             verify_client_cacert: {{ .volume.mount }}/etc/tls/ca.crt
           client:
             scheme: https
