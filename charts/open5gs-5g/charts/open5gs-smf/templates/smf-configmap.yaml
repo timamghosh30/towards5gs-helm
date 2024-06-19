@@ -71,8 +71,8 @@ data:
 
       metrics:
         server:
-        - addr: 0.0.0.0
-          port: {{ .metricService.port }}
+          - address: 0.0.0.0
+            port: {{ .metricService.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}

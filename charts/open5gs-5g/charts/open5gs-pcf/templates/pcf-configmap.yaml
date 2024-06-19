@@ -47,20 +47,20 @@ data:
 
       sbi:
         server:
-        - dev: eth0
-          advertise: {{ include "open5gs-pcf.fullname" $ }}-service
-          port: {{ .service.port }}
+          - dev: eth0
+            advertise: {{ include "open5gs-pcf.fullname" $ }}-service
+            port: {{ .service.port }}
 
         client:
           nrf:
-          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.nrf.service.name }}:{{ $.Values.global.nrf.service.port }}
           scp:
-          - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
+            - uri: {{ $.Values.global.sbi.scheme }}://{{ $.Values.global.scp.service.name }}:{{ $.Values.global.scp.service.port }}
 
       metrics:
         server:
-        - addr: 0.0.0.0
-          port: {{ .metricService.port }}
+          - address: 0.0.0.0
+            port: {{ .metricService.port }}
 
     logger:
       {{- .configuration.logger | nindent 6 }}
