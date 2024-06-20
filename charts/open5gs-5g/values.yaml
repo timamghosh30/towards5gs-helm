@@ -20,13 +20,13 @@ global:
     service:
       name: nrf-nnrf
       type: ClusterIP
-      port: "8000"
+      port: "2101"
       nodePort: "30800"
   scp:
     service:
       name: scp-nscp
       type: ClusterIP
-      port: "8000"
+      port: "2101"
       nodePort: "30801"
   sbi:
     scheme: http  # http or https

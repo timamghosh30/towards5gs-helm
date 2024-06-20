@@ -24,13 +24,13 @@ global:
     service:
       name: nrf-nnrf
       type: ClusterIP
-      port: "8000"
+      port: "2101"
       nodePort: "30800"
   scp:
     service:
       name: scp-nscp
       type: ClusterIP
-      port: "8000"
+      port: "2101"
       nodePort: "30801"
   sbi:
     scheme: http
@@ -79,7 +79,7 @@ smf:
     pullPolicy: Always
   service:
     type: ClusterIP
-    port: 80
+    port: 2101
   metricService:
     type: ClusterIP
     port: 9090
