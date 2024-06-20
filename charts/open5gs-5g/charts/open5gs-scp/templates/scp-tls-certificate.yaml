@@ -25,7 +25,6 @@ spec:
   dnsNames:
     - {{ $.Values.global.scp.service.name }}
   issuerRef:
-    name: {{ include "open5gs-scp.fullname" $ }}-tls-issuer
-    kind: Issuer
+    {{- toYaml $.Values.global.sbi.tls.issuerRef | nindent 4 }}
 {{- end }}
 {{- end }}

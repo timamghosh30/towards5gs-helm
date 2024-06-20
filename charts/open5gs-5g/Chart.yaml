@@ -16,6 +16,8 @@ description: A Helm chart to deploy Open5GS
 version: 1.0.0
 appVersion: "latest"
 dependencies:
+- name: 5gc-sbi-ca
+  condition: deployCAIssuer
 - name: mongodb
   condition: deployMongoDB
 - name: open5gs-amf

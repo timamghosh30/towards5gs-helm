@@ -25,7 +25,6 @@ spec:
   dnsNames:
     - {{ include "open5gs-pcf.fullname" $ }}-service
   issuerRef:
-    name: {{ include "open5gs-pcf.fullname" $ }}-tls-issuer
-    kind: Issuer
+    {{- toYaml $.Values.global.sbi.tls.issuerRef | nindent 4 }}
 {{- end }}
 {{- end }}
