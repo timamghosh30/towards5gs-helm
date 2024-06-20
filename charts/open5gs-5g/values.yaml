@@ -33,7 +33,7 @@ global:
     tls:
       issuerRef:
         name: open5gs-ca-issuer
-        kind: ClusterIssuer
+        kind: Issuer
   amf:
     n2if:  # NGAP
       ipAddress: 10.100.50.249
