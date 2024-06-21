@@ -23,13 +23,13 @@ global:
     service:
       name: nrf-nnrf
       type: ClusterIP
-      port: "2101"
+      port: "7777"
       nodePort: "30800"
   scp:
     service:
       name: scp-nscp
       type: ClusterIP
-      port: "2101"
+      port: "7777"
       nodePort: "30801"
   sbi:
     scheme: http  # http or https
@@ -59,7 +59,7 @@ ausf:
     pullPolicy: Always
   service:
     type: ClusterIP
-    port: 2101
+    port: 7777
   volume:
     mount: /open5gs/install
   podAnnotations: {}
