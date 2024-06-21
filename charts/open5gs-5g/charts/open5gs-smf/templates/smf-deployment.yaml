@@ -76,7 +76,7 @@ spec:
         - name: n4
           containerPort: 8805
           protocol: UDP
-        - containerPort: {{ .service.port }}
+        - containerPort: {{ .metricService.port }}
           name: metrics
         command: ["./open5gs-smfd"]
         args: ["-c", "{{ .volume.mount }}/etc/smf.yaml"]
